@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Sudoku</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>VASU SUDOKU BOARD</h1>
+    <div id="game-container">
+        <div id="sudoku-board"></div>
+        <div id="controls">
+            <div class="control-group">
+                <h2>Difficulty</h2>
+                <div class="button-row" id="difficulty-selector">
+                    <button data-difficulty="easy" class="active">Easy</button>
+                    <button data-difficulty="medium">Medium</button>
+                    <button data-difficulty="hard">Hard</button>
+                </div>
+            </div>
+            <div class="control-group">
+                <h2>Mode</h2>
+                <button id="notes-toggle-btn">Notes: OFF</button>
+            </div>
+            <div class="control-group">
+                <h2>Actions</h2>
+                <div id="timer" style="text-align:center; font-weight:bold; margin-bottom:8px;">Time: 00:00</div>
+                <div class="button-row">
+                    
+                    <button id="check-btn">Check</button>
+                    <button id="solve-btn">Solve</button>
+                    <button id="darkmode-btn">Dark Mode</button>
+                </div>
+                <p id="message"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

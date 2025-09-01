@@ -1,0 +1,216 @@
+body.dark-mode {
+    background-color: #181a1b;
+    color: #e0e0e0;
+}
+#controls.dark-mode, .control-group.dark-mode {
+    background: #23272a;
+    color: #e0e0e0;
+}
+#sudoku-board.dark-mode {
+    background: #23272a;
+    border-color: #888;
+}
+.cell.dark-mode {
+    background-color: #23272a;
+    color: #e0e0e0;
+}
+
+@keyframes win-flash {
+    0% { background: #b3ffb3; }
+    100% { background: inherit; }
+}
+:root {
+    --board-bg: #fff;
+    --cell-bg: #fff;
+    --given-bg: #f2f2f2;
+    --highlight-bg: #e0efff;
+    --active-cell-bg: #cce7ff;
+    --error-bg: #ffdddd;
+    --border-color: #ccc;
+    --thick-border-color: #333;
+    --primary-text: #333;
+    --user-text: #007bff;
+    --error-text: #d8000c;
+    --note-text: #666;
+    --button-bg: #007bff;
+    --button-hover-bg: #0056b3;
+}
+
+body {
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f2f5;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#game-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+#sudoku-board {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    width: clamp(320px, 90vw, 540px);
+    height: clamp(320px, 90vw, 540px);
+    border: 3px solid var(--thick-border-color);
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cell {
+    position: relative;
+    border: 1px solid var(--border-color);
+    background-color: var(--cell-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* Thicker borders for 3x3 sub-grids */
+.cell:nth-child(3n) { border-right: 2px solid var(--thick-border-color); }
+.cell:nth-child(9n) { border-right: 1px solid var(--border-color); }
+/* Apply thick bottom border to cells in the 3rd and 6th rows */
+.cell:nth-child(n + 19):nth-child(-n + 27),
+.cell:nth-child(n + 46):nth-child(-n + 54) {
+    border-bottom: 2px solid var(--thick-border-color);
+}
+.cell:nth-child(81) { border-bottom: none; }
+
+
+.cell-input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+    text-align: center;
+    font-size: clamp(1.5rem, 5vmin, 2.2rem);
+    font-weight: bold;
+    color: var(--user-text);
+    outline: none;
+    padding: 0;
+    line-height: 1; /* Corrects vertical alignment */
+}
+
+/* Hide number input spinners */
+.cell-input::-webkit-outer-spin-button,
+.cell-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.cell-input[type=number] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.notes-grid {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.note-cell {
+    font-size: clamp(0.5rem, 1.5vmin, 0.7rem);
+    color: var(--note-text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cell.notes-active .cell-input {
+    pointer-events: none;
+    color: transparent;
+}
+.cell.notes-active .notes-grid {
+    pointer-events: auto;
+    visibility: visible;
+}
+
+.cell.given { pointer-events: none; }
+.cell.given .cell-input {
+    background-color: var(--given-bg);
+    color: var(--primary-text);
+    pointer-events: none;
+}
+
+.cell.highlighted { background-color: var(--highlight-bg); }
+.cell.selected { background-color: var(--active-cell-bg); }
+.cell.error { background-color: var(--error-bg); }
+.cell.error .cell-input { color: var(--error-text); }
+.cell.same-number-highlight { background-color: #b3d7ff; }
+
+#controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: clamp(200px, 50vw, 260px);
+    align-items: center;
+}
+
+.control-group {
+    background: var(--board-bg);
+    padding: 18px 15px 18px 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.control-group h2 {
+    font-size: 1rem;
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: center;
+    color: var(--primary-text);
+}
+
+#controls .button-row {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.button-row button, .control-group > button {
+    flex: 1 1 0;
+    padding: 10px 0;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: var(--button-bg);
+    color: white;
+    transition: background-color 0.2s;
+    min-width: 0;
+    margin: 0 2px;
+    text-align: center;
+}
+.button-row button:hover, .control-group > button:hover { background-color: var(--button-hover-bg); }
+.button-row button.active { background-color: #004a99; }
+#undo-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+#message {
+    margin-top: 10px;
+    font-weight: bold;
+    min-height: 20px;
+    text-align: center;
+}
